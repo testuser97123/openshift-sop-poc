@@ -191,8 +191,9 @@ oc-mirror -c ./isc.yaml --from file:///root/quay-ops/oc-mirror/mirror1 docker://
 ```
 
 ### KUBEMACPOOL VM ==================
-
-# oc annotate --overwrite -n openshift-cnv hco kubevirt-hyperconverged 'networkaddonsconfigs.kubevirt.io/jsonpatch=[{"op": "replace","path": "/spec/kubeMacPool","value": null}]'
+```yml
+oc annotate --overwrite -n openshift-cnv hco kubevirt-hyperconverged 'networkaddonsconfigs.kubevirt.io/jsonpatch=[{"op": "replace","path": "/spec/kubeMacPool","value": null}]'
+```
 
 #### FIX INGRESS ROUTE for Quay Application Deployment (push/pull)
 
