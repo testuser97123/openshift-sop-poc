@@ -1,0 +1,38 @@
+DEFAULT_TAG_EXPIRATION: 2w
+FEATURE_USER_INITIALIZE: true
+FEATURE_USER_CREATION: true
+BROWSER_API_CALLS_XHR_ONLY: false
+FEATURE_QUOTA_MANAGEMENT: true
+FEATURE_BUILD_SUPPORT: true
+FEATURE_PROXY_CACHE: true
+FEATURE_PROXY_STORAGE: true
+FEATURE_DIRECT_LOGIN: true
+REGISTRY_TITLE: Red Hat Quay
+REGISTRY_TITLE_SHORT: Red Hat Quay
+TESTING: false
+FEATURE_UI_V2: true
+FEATURE_UI_V2_REPO_SETTINGS: true
+FEATURE_AUTO_PRUNE: true
+ROBOTS_DISALLOW: false
+CREATE_NAMESPACE_ON_PUSH: true
+SETUP_COMPLETE: true
+CREATE_PRIVATE_REPO_ON_PUSH: false
+TAG_EXPIRATION_OPTIONS:
+- 2w
+TEAM_RESYNC_STALE_TIME: 60m
+DISTRIBUTED_STORAGE_CONFIG:
+    default:
+        - RHOCSStorage
+        - access_key: vNfSCsppFIuPABgnSOtH
+          bucket_name: quay-bucket-fa2c4f12-0d01-43fb-aae3-cda90c986f06
+          hostname: s3-openshift-storage.apps.cluster-vrvf6.dynamic.redhatworkshops.io
+          is_secure: true
+          port: "443"
+          secret_key: DWQ7JM9Vd7cD33+YcwwAg4ac2c11Ju3/e9iJBED+
+          storage_path: /datastorage/registry
+DISTRIBUTED_STORAGE_DEFAULT_LOCATIONS: []
+DISTRIBUTED_STORAGE_PREFERENCE:
+  - default
+SERVER_HOSTNAME: quay-enterprise.apps.cluster-vrvf6.dynamic.redhatworkshops.io
+SUPER_USERS:
+  - quayadmin
