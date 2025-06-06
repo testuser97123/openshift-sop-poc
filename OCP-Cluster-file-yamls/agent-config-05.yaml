@@ -1,3 +1,4 @@
+```yml
 apiVersion: v1alpha1
 kind: AgentConfig
 metadata:
@@ -44,3 +45,4 @@ hosts:
             next-hop-address: 172.25.1.1
             next-hop-interface: bond0
             table-id: 254 
+```

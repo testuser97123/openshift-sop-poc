@@ -1,3 +1,4 @@
+```yml
 apiVersion: v1alpha1
 kind: AgentConfig
 rendezvousIP: 192.168.1.17
@@ -578,3 +579,4 @@ hosts:
             next-hop-address: 192.168.1.1
             next-hop-interface: vlan-87
             table-id: 254
+```

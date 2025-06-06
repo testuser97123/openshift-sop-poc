@@ -1,3 +1,4 @@
+```yml
 apiVersion: v1
 baseDomain: blackbird.com
 compute:
@@ -33,3 +34,4 @@ imageContentSources:
   - mirrors:
     - registry1.ocp2.blackbird.com:8443/openshift/release-images
     source: quay.io/openshift-release-dev/ocp-release
+```

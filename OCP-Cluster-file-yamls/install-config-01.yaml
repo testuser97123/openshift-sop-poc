@@ -1,3 +1,4 @@
+```yml
 apiVersion: v1
 baseDomain: blackbird.com
 compute:
@@ -29,3 +30,4 @@ platform:
     - 10.50.171.24
 pullSecret: 'blackbird-secret.json' output
 sshKey: 'ssh-rsa AAAAB3N root@blackbird.com'
+```
