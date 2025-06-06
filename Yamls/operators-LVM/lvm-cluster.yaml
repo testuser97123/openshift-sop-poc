@@ -1,0 +1,86 @@
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: blackhawk
+  namespace: openshift-storage
+spec:
+  storage:
+    deviceClasses:
+      - deviceSelector:
+          forceWipeDevicesAndDestroyAllData: true
+          paths:
+            - /dev/disk/by-id/wwn-0x5000c2903ce92cfd-part1
+            - /dev/disk/by-id/wwn-0x5000c297035d01ae-part1
+            - /dev/disk/by-id/wwn-0x5000c29c6116f048-part1
+        fstype: xfs
+        name: blackbird
+        thinPoolConfig:
+          chunkSizeCalculationPolicy: Static
+          metadataSizeCalculationPolicy: Host
+          name: blackpool
+          overprovisionRatio: 10
+          sizePercent: 90
+status:
+  conditions:
+    - lastTransitionTime: '2025-04-18T09:22:43Z'
+      message: Reconciliation is complete and all the resources are available
+      reason: ResourcesAvailable
+      status: 'True'
+      type: ResourcesAvailable
+    - lastTransitionTime: '2025-04-18T09:22:43Z'
+      message: All the VGs are ready
+      reason: VGsReady
+      status: 'True'
+      type: VolumeGroupsReady
+  deviceClassStatuses:
+    - name: blackbird
+      nodeStatus:
+        - deviceDiscoveryPolicy: Preconfigured
+          devices:
+            - /dev/sda1
+            - /dev/sdb1
+            - /dev/sdc1
+          excluded:
+            - name: /dev/nvme0n1
+              reasons:
+                - /dev/nvme0n1 has children block devices and could not be considered
+                - /dev/nvme0n1 is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/nvme0n1p1
+              reasons:
+                - /dev/nvme0n1p1 has an invalid partition label "BIOS-BOOT"
+                - /dev/nvme0n1p1 is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/nvme0n1p2
+              reasons:
+                - /dev/nvme0n1p2 has an invalid filesystem signature (vfat) and cannot be used
+                - /dev/nvme0n1p2 is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/nvme0n1p3
+              reasons:
+                - /dev/nvme0n1p3 has an invalid filesystem signature (ext4) and cannot be used
+                - /dev/nvme0n1p3 has an invalid partition label "boot"
+                - /dev/nvme0n1p3 is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/nvme0n1p4
+              reasons:
+                - /dev/nvme0n1p4 has an invalid filesystem signature (xfs) and cannot be used
+                - /dev/nvme0n1p4 is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/sda
+              reasons:
+                - /dev/sda has children block devices and could not be considered
+                - /dev/sda is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/sdb
+              reasons:
+                - /dev/sdb has children block devices and could not be considered
+                - /dev/sdb is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/sdc
+              reasons:
+                - /dev/sdc has children block devices and could not be considered
+                - /dev/sdc is not part of the device selector or could not be resolved via symlink resolution
+            - name: /dev/sr0
+              reasons:
+                - /dev/sr0 has a device type of "rom" which is unsupported
+                - /dev/sr0 has an invalid filesystem signature (iso9660) and cannot be used
+                - /dev/sr0 is not part of the device selector or could not be resolved via symlink resolution
+          name: blackbird
+          node: master1.ocp4.example.com
+          status: Ready
+  ready: true
+  state: Ready

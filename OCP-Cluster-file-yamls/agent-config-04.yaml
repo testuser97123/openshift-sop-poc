@@ -1,0 +1,483 @@
+apiVersion: v1alpha1
+kind: AgentConfig
+metadata:
+  name: ocp2
+rendezvousIP: 172.25.14.4
+AdditionalNTPSources:
+- 172.25.14.200
+- 172.25.14.201
+hosts:
+  - hostname: master1.prod.blackbird.com
+    role: master
+    rootDeviceHints:
+      deviceName: "/dev/nvme0n1"
+    interfaces:
+      - name: ens15f1np1
+        macAddress: "d4:04:e6:45:15:d5"
+      - name: ens15f0np0
+        macAddress: "d4:04:e6:45:15:d4"
+      - name: ens1f1np1
+        macAddress: "d4:04:e6:eb:4a:f1"
+      - name: ens1f0np0
+        macAddress: "d4:04:e6:eb:4a:f0"
+    networkConfig:
+      interfaces:
+        - name: bond0
+          type: bond
+          state: up
+          ipv4:
+            address:
+              - ip: 172.25.14.4
+                prefix-length: 26
+            enabled: true
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: '140'
+            port:
+              - ens15f1np1
+              - ens15f0np0
+        - name: bond1
+          type: bond
+          state: up
+          mac-address: d4:04:e6:eb:4a:f1
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: "150"
+            port:
+             - ens1f1np1
+             - ens1f0np0
+        - name: vlan-202
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 202
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.14.69
+                prefix-length: 26
+            dhcp: false
+        - name: vlan-203
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 203
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.2.4
+                prefix-length: 26
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 172.25.2.187
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.25.14.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: master2.prod.blackbird.com
+    role: master
+    rootDeviceHints:
+      deviceName: "/dev/nvme0n1"
+    interfaces:
+      - name: ens15f1np1
+        macAddress: "d4:04:e6:45:ec:c7"
+      - name: ens15f0np0
+        macAddress: "d4:04:e6:45:ec:c6"
+      - name: ens1f1np1
+        macAddress: "d4:04:e6:ed:d1:f1"
+      - name: ens1f0np0
+        macAddress: "d4:04:e6:ed:d1:f0"
+    networkConfig:
+      interfaces:
+        - name: bond0
+          type: bond
+          state: up
+          ipv4:
+            address:
+              - ip: 172.25.14.5
+                prefix-length: 26
+            enabled: true
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: '140'
+            port:
+              - ens15f1np1
+              - ens15f0np0
+        - name: bond1
+          type: bond
+          state: up
+          macAddress: d4:04:e6:ed:d1:f1
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: "150"
+            port:
+             - ens1f1np1
+             - ens1f0np0
+        - name: vlan-202
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 202
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.14.70
+                prefix-length: 26
+            dhcp: false
+        - name: vlan-203
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 203
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.2.5
+                prefix-length: 26
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 172.25.2.187
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.25.14.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: master3.prod.blackbird.com
+    role: master
+    rootDeviceHints:
+      deviceName: "/dev/nvme0n1"
+    interfaces:
+      - name: ens15f1np1
+        macAddress: "d4:04:e6:44:ff:c1"
+      - name: ens15f0np0
+        macAddress: "d4:04:e6:44:ff:c0"
+      - name: ens1f1np1
+        macAddress: "d4:04:e6:eb:09:91"
+      - name: ens1f0np0
+        macAddress: "d4:04:e6:eb:09:90"
+    networkConfig:
+      interfaces:
+        - name: bond0
+          type: bond
+          state: up
+          ipv4:
+            address:
+              - ip: 172.25.14.6
+                prefix-length: 26
+            enabled: true
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: '140'
+            port:
+              - ens15f1np1
+              - ens15f0np0
+        - name: bond1
+          type: bond
+          state: up
+          mac-address: d4:04:e6:eb:09:91
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: "150"
+            port:
+             - ens1f1np1
+             - ens1f0np0
+        - name: vlan-202
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 202
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.14.71
+                prefix-length: 26
+            dhcp: false
+        - name: vlan-203
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 203
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.2.6
+                prefix-length: 26
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 172.25.2.187
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.25.14.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: worker1.prod.blackbird.com
+    role: worker
+    rootDeviceHints:
+      deviceName: "/dev/nvme0n1"
+    interfaces:
+      - name: ens15f1np1
+        macAddress: "d4:04:e6:45:ed:69"
+      - name: ens15f0np0
+        macAddress: "d4:04:e6:45:ed:68"
+      - name: ens1f1np1
+        macAddress: "d4:04:e6:ed:3e:51"
+      - name: ens1f0np0
+        macAddress: "d4:04:e6:ed:3e:50"
+    networkConfig:
+      interfaces:
+        - name: bond0
+          type: bond
+          state: up
+          ipv4:
+            address:
+              - ip: 172.25.14.7
+                prefix-length: 26
+            enabled: true
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: '140'
+            port:
+              - ens15f1np1
+              - ens15f0np0
+        - name: bond1
+          type: bond
+          state: up
+          macAddress: d4:04:e6:ed:3e:51
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: "150"
+            port:
+             - ens1f1np1
+             - ens1f0np0
+        - name: vlan-202
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 202
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.14.72
+                prefix-length: 26
+            dhcp: false
+        - name: vlan-203
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 203
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.2.7
+                prefix-length: 26
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 172.25.2.187
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.25.14.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: worker2.prod.blackbird.com
+    role: worker
+    rootDeviceHints:
+      deviceName: "/dev/nvme0n1"
+    interfaces:
+      - name: ens15f1np1
+        macAddress: "d4:04:e6:45:d8:3f"
+      - name: ens15f0np0
+        macAddress: "d4:04:e6:45:d8:3e"
+      - name: ens1f1np1
+        macAddress: "d4:04:e6:eb:4f:a1"
+      - name: ens1f0np0
+        macAddress: "d4:04:e6:eb:4f:a0"
+    networkConfig:
+      interfaces:
+        - name: bond0
+          type: bond
+          state: up
+          ipv4:
+            address:
+              - ip: 172.25.14.8
+                prefix-length: 26
+            enabled: true
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: '140'
+            port:
+              - ens15f1np1
+              - ens15f0np0
+        - name: bond1
+          type: bond
+          state: up
+          macAddresss: d4:04:e6:eb:4f:a1
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: "150"
+            port:
+             - ens1f1np1
+             - ens1f0np0
+        - name: vlan-202
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 202
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.14.73
+                prefix-length: 26
+            dhcp: false
+        - name: vlan-203
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 203
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.2.8
+                prefix-length: 26
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 172.25.2.187
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.25.14.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: worker3.prod.blackbird.com
+    role: worker
+    rootDeviceHints:
+      deviceName: "/dev/nvme0n1"
+    interfaces:
+      - name: ens15f1np1
+        macAddress: "d4:04:e6:45:f7:e3"
+      - name: ens15f0np0
+        macAddress: "d4:04:e6:45:f7:e2"
+      - name: ens1f1np1
+        macAddress: "d4:04:e6:ed:46:81"
+      - name: ens1f0np0
+        macAddress: "d4:04:e6:ed:46:80"
+    networkConfig:
+      interfaces:
+        - name: bond0
+          type: bond
+          state: up
+          ipv4:
+            address:
+              - ip: 172.25.14.9
+                prefix-length: 26
+            enabled: true
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: '140'
+            port:
+              - ens15f1np1
+              - ens15f0np0
+        - name: bond1
+          type: bond
+          state: up
+          macAddress: d4:04:e6:ed:46:81
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: active-backup
+            options:
+              miimon: "150"
+            port:
+             - ens1f1np1
+             - ens1f0np0
+        - name: vlan-202
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 202
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.14.74
+                prefix-length: 26
+            dhcp: false
+        - name: vlan-203
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond1
+            id: 203
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.25.2.9
+                prefix-length: 26
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 172.25.2.187
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.25.14.1
+            next-hop-interface: bond0
+            table-id: 254 

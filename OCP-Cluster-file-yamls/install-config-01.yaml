@@ -1,0 +1,31 @@
+apiVersion: v1
+baseDomain: blackbird.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  replicas: 10
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+metadata:
+  name: nonprod
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 22
+  machineNetwork:
+  - cidr: 10.50.171.0/25
+  networkType: OVNKubernetes
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  baremetal:
+    apiVIPs:
+    - 10.50.171.25
+    ingressVIPs:
+    - 10.50.171.24
+pullSecret: 'blackbird-secret.json' output
+sshKey: 'ssh-rsa AAAAB3N root@blackbird.com'

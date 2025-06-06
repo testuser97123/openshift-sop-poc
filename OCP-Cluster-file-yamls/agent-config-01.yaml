@@ -1,0 +1,580 @@
+apiVersion: v1alpha1
+kind: AgentConfig
+rendezvousIP: 192.168.1.17
+hosts:
+  - hostname: master01.nonprod.blackbird.com
+    role: master
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:CC
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:CD
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:CC
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.17
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: master02.nonprod.blackbird.com
+    role: master
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:A2
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:A3
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:A2
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.12
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: master03.nonprod.blackbird.com
+    role: master
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:B4
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:B5
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:B4
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.13
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker04.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:D0
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:D1
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:D0
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.14
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker05.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:BE
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:BF
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:BE
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.15
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker06.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:C0
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:C1
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:C0
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.16
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker07.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:C2
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:C3
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:C2
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.17
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker08.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:C8
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:C9
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:C8
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.18
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker09.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:AA
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:AB
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:AA
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.19
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker11.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:A4
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:A5
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:A4
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.21
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker12.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:A6
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:A7
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:A6
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.22
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
+  - hostname: worker13.nonprod.blackbird.com
+    role: worker
+    interfaces:
+      - name: ens3f0
+        macAddress: 00:0A:0B:40:00:86
+      - name: ens3f1
+        macAddress: 00:0A:0B:40:00:87
+    networkConfig:
+      interfaces:
+        - name: bond0   # Bond0  Network
+          type: bond
+          state: up
+          mac-address: 00:0A:0B:40:00:86
+          mtu: 8500
+          ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          link-aggregation:
+            mode: 802.3ad
+            options:
+              miimon: "150"
+            port:
+             - ens3f0
+             - ens3f1
+        - name: vlan-87  # bond0 - vlan 87 - tagging  
+          type: vlan
+          state: up
+          vlan:
+            base-iface: bond0
+            id: 87
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.1.23
+                prefix-length: 25
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.1.200
+            - 192.168.1.200
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.1.1
+            next-hop-interface: vlan-87
+            table-id: 254
