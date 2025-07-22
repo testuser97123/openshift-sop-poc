@@ -1,0 +1,219 @@
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: logging-loki 
+  namespace: openshift-logging 
+spec:
+  hashRing:
+    memberlist:
+      instanceAddrType: podIP
+    type: memberlist
+  limits:
+    global:
+      retention:
+        days: 30
+        streams:
+          - days: 30
+            priority: 1
+            selector: '{log_type="application"}'
+          - days: 15
+            priority: 2
+            selector: '{log_type="infrastructure"}'
+          - days: 15
+            priority: 3
+            selector: '{log_type="audit"}'
+      queries:
+        queryTimeout: 120m
+  size: 1x.medium
+  rules:
+    enabled: true
+    namespaceSelector:
+      matchLabels:
+        openshift.io/logging: 'true'
+    selector:
+      matchLabels:
+       openshift.io/logging: 'true'
+  managementState: Managed
+  storage:
+    schemas:
+    - version: v13
+      effectiveDate: "2025-01-16"
+    secret:
+      name: loki-secret 
+      type: s3 
+      credentialMode: 
+  storageClassName: ocs-storagecluster-cpeh-rdb
+  tenants:
+    mode: openshift-logging 
+  template:
+    compactor: 
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    distributor:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    gateway:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    indexGateway:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    ingester:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    querier:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    queryFrontend:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+    ruler:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+---
+apiVersion: observability.openshift.io/v1alpha1
+kind: UIPlugin
+metadata:
+  name: logging
+  namespace: openshift-logging
+spec:
+  type: Logging
+  logging:
+    lokiStack:
+      name: logging-loki
+---
+apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: collector
+  namespace: openshift-logging
+spec:
+  collector: 
+    resources: 
+      limits: 
+        cpu: 4
+        memory: 8Gi 
+      requests: 
+        cpu: 2
+        memory: 4Gi
+  serviceAccount:
+    name: collector
+  outputs:
+  - name: logging-loki
+    type: lokiStack
+    lokiStack:
+      authentication:
+        token:
+          from: serviceAccount
+      target:
+        name: logging-loki
+        namespace: openshift-logging
+    tls:
+      ca:
+        key: service-ca.crt
+        configMapName: openshift-service-ca.crt
+  pipelines:
+  - name: default-logstore
+    inputRefs:
+    - application
+    - infrastructure
+    - audit
+    outputRefs:
+    - logging-loki
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-logging-operator
+subjects:
+  - kind: ServiceAccount
+    name: cluster-logging-operator
+    namespace: openshift-logging
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-logging-write-application-logs
+rules:
+  - apiGroups:
+      - loki.grafana.com
+    resources:
+      - application
+    resourceNames:
+      - logs
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-logging-write-audit-logs
+rules:
+  - apiGroups:
+      - loki.grafana.com
+    resources:
+      - audit
+    resourceNames:
+      - logs
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-logging-write-infrastructure-logs
+rules:
+  - apiGroups:
+      - loki.grafana.com
+    resources:
+      - infrastructure
+    resourceNames:
+      - logs
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: clusterlogforwarder-editor-role
+rules:
+  - apiGroups:
+      - observability.openshift.io
+    resources:
+      - clusterlogforwarders
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch

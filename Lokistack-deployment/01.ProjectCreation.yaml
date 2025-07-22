@@ -1,0 +1,14 @@
+#### logging ###########
+## 1. install Openshift Logging operator (specific namespace) ###
+## 2. install Loki operator ##
+## 3. install Cluster Observability Operator ##
+
+oc project openshift-logging
+oc apply -f logging.yaml
+oc create secret generic loki-secret --from-literal=bucketnames="loki-datastore-172abac7-91a3-4e47-b8e6-15943fd64224" --from-literal=endpoint="https://s3-openshift-storage.apps.cluster-pscbt.dynamic.redhatworkshops.io"   --from-literal=access_key_id="cyvQHphAXqg4993HeoDE"  --from-literal=access_key_secret="J6MXsfGGCsa/BtDUH7YZMBrCBTjX887lDUWKLIDw"
+
+oc create sa collector -n openshift-logging
+oc adm policy add-cluster-role-to-user logging-collector-logs-writer -z collector
+oc adm policy add-cluster-role-to-user collect-application-logs -z collector
+oc adm policy add-cluster-role-to-user collect-audit-logs -z collector
+oc adm policy add-cluster-role-to-user collect-infrastructure-logs -z collector
